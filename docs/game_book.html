@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link type="text/css" rel="stylesheet"
+    href="https://wq.360buyimg.com/wxsq_item_search/search/search_m/css/msearch.753d00f6.css"
+    onerror="__reloadResource(this)">
+  <link type="text/css" rel="stylesheet"
+    href="https://wq.360buyimg.com/wxsq_item_search/search/static_css_include/style/search_m_smartbox.423d649d.css"
+    onerror="__reloadResource(this)">
+  <style>
+    #itemList {
+      display: flex;
+      flex-direction: column;
+    }
+  </style>
+  <style>
+    
+  </style>
+</head>
+
+<body>
+  <div>4/14/2021, 2:30:19 PM</div>
+  <div id="start_time_list" style="display: none;">
+    
+  </div>
+  <div class="search_prolist cols_1" id="itemList">
+    
+  </div>
+  <script src="https://zhcdn01.xoyo.com/xassets/lib/jquery/1.7.2/jquery.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.css"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.js"></script>
+  <script>
+    $.fn.longpress = function(time, onlongpress)
+    {
+      var timestart = 0;
+      var timer = null;
+
+      //If time wasn't specified
+      if (!onlongpress)
+      {
+        onlongpress = time;
+        time = 2000; //Default long-press time
+      }
+
+      //When the mouse is down start checking the time
+      $(this).on( 'mousedown', function( e )
+      {
+        timestart = new Date().getTime();
+        checktime();
+      });
+
+      //Check to see how much time has passed
+      var checktime = function()
+      {
+        if ( new Date().getTime() >= ( timestart + time )  )
+        {
+          if (typeof onlongpress == 'function')
+          {
+            //Fire the callback
+            onlongpress();
+          }
+        }
+        else
+        {
+          // Keep checking
+          timer = setTimeout(checktime, 1);
+        }
+      }
+
+      $(this).on( 'mouseleave mouseup', function( e )
+      {
+        //Stop checking if the mouse is up too early or the mouse leaves the element
+        timestart = 0;
+        clearTimeout(timer);
+      });
+    };
+  </script>
+  <script>
+    $('.search_prolist_cover').on('click', function () {
+      const skuid = $(this).parent().parent().attr('skuid');
+      window.location.href = `https://item.jd.com/${skuid}.html`;
+    });
+
+    $('.search_prolist_info').on('click', function () {
+      const tourl = $(this).parent().attr('tourl');
+      window.location.href = tourl;
+    });
+
+    $('.search_prolist_item').longpress(3000, function() {
+      const skuid = $(this).eq(0).find("[skuid]").attr('skuid');
+      $.toast(skuid)
+    });
+  </script>
+</body>
+
+</html>
